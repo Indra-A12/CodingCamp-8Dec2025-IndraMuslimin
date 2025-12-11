@@ -1,53 +1,95 @@
-/// Initial empty array to hold todo items
 let todo = [];
 
 function addTodo() {
     const todoInput = document.getElementById("todo-input");
     const todoDate = document.getElementById("todo-date");
 
-    /// Validation to ensure both fields are filled
-    if (todoInput.value === "" || todoDate.value === "") {
+    if (todoInput.value === "" && todoDate.value === "") {
         alert("Please fill in both the todo item and the date.");
-    } else {
-        const todoObj = {
-            task: todoInput.value,
-            date: todoDate.value
-        }
-
-        todo.push(todoObj);
-
-        renderTodos();
-
-        /// Clear input fields after adding
-        todoInput.value = "";
-        todoDate.value = "";
+        return;
     }
+    if (todoInput.value === "") {
+        alert("Please fill in the todo item.");
+        return;
+    }
+    if (todoDate.value === "") {
+        alert("Please fill in the due date.");
+        return;
+    }
+
+    // Cek data duplikat
+    const exists = todo.some(item => 
+        item.task.toLowerCase() === todoInput.value.toLowerCase() && 
+        item.date === todoDate.value
+    );
+
+    if (exists) {
+        alert("Todo item with this date already exists!");
+        return;
+    }
+
+    const todoObj = {
+        task: todoInput.value,
+        date: todoDate.value,
+        status: "Pending"
+    };
+
+    todo.push(todoObj);
+
+    renderTodos();
+
+    todoInput.value = "";
+    todoDate.value = "";
 }
 
-/// Function to reset the todo list
-function resetTodos() {
-    todo = [];
-
-    /// Re-render the empty list
+function deleteTodo(index) {
+    todo.splice(index, 1);
     renderTodos();
 }
 
-/// Function to render todo items to the DOM
-function renderTodos() {
-    const todoList = document.getElementById('todo-list');
-
-    // Clear existing list
-    todoList.innerHTML = '';
-
-    // Render each todo item
-    todo.forEach((todo, _) => {
-        todoList.innerHTML += `
-        <li>
-            <p class="text-2xl">${todo.task} <span class="text-sm text-gray-500">(${todo.date})</span></p>
-            <hr />
-        </li>`;
-    });
+function markDone(index) {
+    todo[index].status = "Done";
+    renderTodos();
 }
 
-/// Placeholder for future filter functionality
-function filterTodos() { }
+function resetTodos() {
+    todo = [];
+    renderTodos();
+}
+
+function renderTodos() {
+    const tbody = document.getElementById("todo-body");
+    tbody.innerHTML = "";
+
+    if (todo.length === 0) {
+        tbody.innerHTML = `
+        <tr>
+            <td colspan="4" class="empty">No task found</td>
+        </tr>`;
+        return;
+    }
+
+    todo.forEach((item, index) => {
+        tbody.innerHTML += `
+        <tr>
+            <td>${item.task}</td>
+            <td>${item.date}</td>
+            <td class="${item.status === 'Done' ? 'text-green-400' : 'text-yellow-300'}">
+                ${item.status}
+            </td>
+            <td>
+                <button onclick="deleteTodo(${index})"
+                    class="bg-red-500 px-3 py-1 rounded text-white">
+                    Delete
+                </button>
+
+                ${item.status === "Pending" ? `
+                <button onclick="markDone(${index})"
+                    class="bg-green-500 px-3 py-1 rounded text-white ml-2">
+                    Done
+                </button>
+                ` : ""}
+            </td>
+        </tr>`;
+    });
+}

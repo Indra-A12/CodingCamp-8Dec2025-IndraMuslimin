@@ -1,5 +1,44 @@
-    body {
-        justify-items: center;
-        align-content: center;
-        height: 100vh;
-    }
+body {
+    background: #1a1f3d; /* dark navy, background utama */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: white;
+    font-family: "Poppins", sans-serif;
+}
+
+.card {
+    background: #262b50; /* lebih terang dari background utama */
+    padding: 25px;
+    border-radius: 12px;
+    width: 650px;
+    box-shadow: 0px 0px 25px rgba(0, 0, 0, 0.3);
+}
+
+.todo-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #1f2340; /* tabel tetap gelap tapi berbeda dari card */
+    margin-top: 15px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.todo-table th {
+    padding: 12px;
+    background: #2a2f54;
+    text-align: left;
+    color: #adb5bd;
+    font-size: 14px;
+}
+
+.todo-table td {
+    padding: 12px;
+}
+
+.empty {
+    text-align: center;
+    color: #778;
+    padding: 20px;
+}
