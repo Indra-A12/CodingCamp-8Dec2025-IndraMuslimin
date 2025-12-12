@@ -1,4 +1,5 @@
 let todo = [];
+let currentFilter = "all";
 
 function addTodo() {
     const todoInput = document.getElementById("todo-input");
@@ -42,6 +43,13 @@ function addTodo() {
     todoDate.value = "";
 }
 
+function filterTodos() {
+    const select = document.getElementById("filter-select");
+    currentFilter = select.value;
+    renderTodos();
+}
+
+
 function deleteTodo(index) {
     todo.splice(index, 1);
     renderTodos();
@@ -61,7 +69,13 @@ function renderTodos() {
     const tbody = document.getElementById("todo-body");
     tbody.innerHTML = "";
 
-    if (todo.length === 0) {
+    // Filter data sesuai dropdown
+    const filteredTodos = todo.filter(item => {
+        if (currentFilter === "all") return true;
+        return item.status === currentFilter;
+    });
+
+    if (filteredTodos.length === 0) {
         tbody.innerHTML = `
         <tr>
             <td colspan="4" class="empty">No task found</td>
@@ -69,7 +83,7 @@ function renderTodos() {
         return;
     }
 
-    todo.forEach((item, index) => {
+    filteredTodos.forEach((item, index) => {
         tbody.innerHTML += `
         <tr>
             <td>${item.task}</td>
@@ -93,3 +107,4 @@ function renderTodos() {
         </tr>`;
     });
 }
+

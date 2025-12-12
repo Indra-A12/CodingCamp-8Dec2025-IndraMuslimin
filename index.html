@@ -29,7 +29,14 @@
         </div>
 
         <div class="flex justify-between mb-3">
-            <button onclick="filterTodos()" class="bg-[#2a3149] px-4 py-2 rounded text-white">FILTER</button>
+            <select id="filter-select"
+                onchange="filterTodos()"
+                class="bg-[#2a3149] px-4 py-2 rounded text-white">
+                <option value="all">All</option>
+                <option value="Pending">Pending</option>
+                <option value="Done">Done</option>
+            </select>
+            
             <button onclick="resetTodos()" class="bg-indigo-500 px-4 py-2 rounded text-white">DELETE ALL</button>
         </div>
 
